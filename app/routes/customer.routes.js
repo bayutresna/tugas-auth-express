@@ -11,7 +11,7 @@ module.exports = function(app) {
     });
   
     app.get("/api/customer", 
-        [authJwt.verifyToken],
+        [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
         controller.getall
     );
   
@@ -23,19 +23,19 @@ module.exports = function(app) {
   
     app.delete(
       "/api/customer/delete/:id",
-      [authJwt.verifyToken, authJwt.isAdmin],
+      [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
       controller.delete
     );
   
     app.post(
       "/api/customer/create",
-      [authJwt.verifyToken, authJwt.isAdmin],
+      [authJwt.verifyToken],
       controller.store
     );
 
     app.put(
         "/api/customer/update/:id",
-        [authJwt.verifyToken, authJwt.isAdmin],
+        [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
         controller.update
     )
   };
