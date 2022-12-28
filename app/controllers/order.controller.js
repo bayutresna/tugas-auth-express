@@ -1,16 +1,16 @@
 const db = require("../models");
-const customer = db.customer;
+const order = db.order;
 
 const Op = db.Sequelize.Op;
 
 
 exports.getall = (req,res)=>{
-  customer.findAll()
-  .then(customer=>{
-    if(customer.length > 0){
-      res.send({message : "Data Customer ", data : customer})
+  order.findAll()
+  .then(order=>{
+    if(order.length > 0){
+      res.send({message : "Data order ", data : order})
     } else{
-      res.send({ message: "Data Customer Kosong" });
+      res.send({ message: "Data order Kosong" });
     }
   })
   .catch(err =>{
@@ -20,19 +20,19 @@ exports.getall = (req,res)=>{
 
 exports.detail = (req,res)=> {
   const id = parseInt(req.params.id)
-    customer.findOne({
+    order.findOne({
         where:{
             id : id
         }
     })
-    .then(customer =>{
-      if(customer){
+    .then(order =>{
+      if(order){
         res.send({
-          message : "Data Customer Available",
-          data : customer
+          message : "Data order Available",
+          data : order
         });
       } else{
-        res.send({message : "Data Customer not Found"});
+        res.send({message : "Data order not Found"});
       }
     })
     .catch( err=>{
@@ -42,12 +42,12 @@ exports.detail = (req,res)=> {
 
 exports.store = (req, res) => {
   // Save User to Database
-  customer.create({
-    nama: req.body.nama,
-    alamat: req.body.alamat,
-    nohp: req.body.nohp
+  order.create({
+    productId: req.body.productId,
+    customerId: req.body.customerId,
+    tanggal_order: req.body.tanggal_order
   })
-    .then(()=> {res.send({ message: "Customer was registered successfully!" });})
+    .then(()=> {res.send({ message: "order was registered successfully!" });})
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
@@ -55,21 +55,21 @@ exports.store = (req, res) => {
 
 exports.update = (req,res)=> {
     const id = parseInt(req.params.id)
-    customer.findOne({
+    order.findOne({
         where:{
             id : id
         }
     })
-    .then(customer => {
-        if (!customer) {
-          return res.status(404).send({ message: "Customer Not found." });
+    .then(order => {
+        if (!order) {
+          return res.status(404).send({ message: "order Not found." });
         }
-        customer.update({
-          nama: req.body.nama,
-          alamat: req.body.alamat,
-          nohp: req.body.nohp
+        order.update({
+            productId: req.body.productId,
+            customerId: req.body.customerId,
+            tanggal_order: req.body.tanggal_order
         })
-        .then(()=> {res.send({ message: "Customer was updated successfully!" });})
+        .then(()=> {res.send({ message: "order was updated successfully!" });})
         .catch(err => {
           res.status(500).send({ message: err.message });
         });
@@ -78,15 +78,15 @@ exports.update = (req,res)=> {
 
 exports.delete = (req,res) =>{
   const id = parseInt(req.params.id)
-  customer.findOne({
+  order.findOne({
       where:{
           id : id
       }
   })
-  .then(customer => {
-    if(customer){
-      customer.destroy({ where : { id:id } })
-        .then(customer => {
+  .then(order => {
+    if(order){
+      order.destroy({ where : { id:id } })
+        .then(order => {
           res.send({
             message : 'data sudah dihapus',
           });
@@ -97,7 +97,7 @@ exports.delete = (req,res) =>{
     }
     else{
       res.send({
-        message : 'data customer tidak ada'
+        message : 'data order tidak ada'
       });
     };
   })

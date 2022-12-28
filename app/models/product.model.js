@@ -1,7 +1,6 @@
-const { sequelize, Sequelize } = require(".");
 
 module.exports = (sequelize,Sequelize) =>{
-    const product = sequelize.define("customer",{
+    const product = sequelize.define("product",{
         nama:{
             type : Sequelize.STRING
         },
@@ -15,5 +14,6 @@ module.exports = (sequelize,Sequelize) =>{
             type : Sequelize.STRING
         }
 
-    })
+    });
+    return product;
 }

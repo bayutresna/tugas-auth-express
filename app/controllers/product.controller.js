@@ -1,16 +1,16 @@
 const db = require("../models");
-const customer = db.customer;
+const product = db.product;
 
 const Op = db.Sequelize.Op;
 
 
 exports.getall = (req,res)=>{
-  customer.findAll()
-  .then(customer=>{
-    if(customer.length > 0){
-      res.send({message : "Data Customer ", data : customer})
+  product.findAll()
+  .then(product=>{
+    if(product.length > 0){
+      res.send({message : "Data product ", data : product})
     } else{
-      res.send({ message: "Data Customer Kosong" });
+      res.send({ message: "Data product Kosong" });
     }
   })
   .catch(err =>{
@@ -20,19 +20,19 @@ exports.getall = (req,res)=>{
 
 exports.detail = (req,res)=> {
   const id = parseInt(req.params.id)
-    customer.findOne({
+    product.findOne({
         where:{
             id : id
         }
     })
-    .then(customer =>{
-      if(customer){
+    .then(product =>{
+      if(product){
         res.send({
-          message : "Data Customer Available",
-          data : customer
+          message : "Data product Available",
+          data : product
         });
       } else{
-        res.send({message : "Data Customer not Found"});
+        res.send({message : "Data product not Found"});
       }
     })
     .catch( err=>{
@@ -42,12 +42,12 @@ exports.detail = (req,res)=> {
 
 exports.store = (req, res) => {
   // Save User to Database
-  customer.create({
-    nama: req.body.nama,
-    alamat: req.body.alamat,
-    nohp: req.body.nohp
+  product.create({
+    productId: req.body.productId,
+    customerId: req.body.customerId,
+    tanggal_product: req.body.tanggal_product
   })
-    .then(()=> {res.send({ message: "Customer was registered successfully!" });})
+    .then(()=> {res.send({ message: "product was registered successfully!" });})
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
@@ -55,21 +55,21 @@ exports.store = (req, res) => {
 
 exports.update = (req,res)=> {
     const id = parseInt(req.params.id)
-    customer.findOne({
+    product.findOne({
         where:{
             id : id
         }
     })
-    .then(customer => {
-        if (!customer) {
-          return res.status(404).send({ message: "Customer Not found." });
+    .then(product => {
+        if (!product) {
+          return res.status(404).send({ message: "product Not found." });
         }
-        customer.update({
-          nama: req.body.nama,
-          alamat: req.body.alamat,
-          nohp: req.body.nohp
+        product.update({
+            productId: req.body.productId,
+            customerId: req.body.customerId,
+            tanggal_product: req.body.tanggal_product
         })
-        .then(()=> {res.send({ message: "Customer was updated successfully!" });})
+        .then(()=> {res.send({ message: "product was updated successfully!" });})
         .catch(err => {
           res.status(500).send({ message: err.message });
         });
@@ -78,15 +78,15 @@ exports.update = (req,res)=> {
 
 exports.delete = (req,res) =>{
   const id = parseInt(req.params.id)
-  customer.findOne({
+  product.findOne({
       where:{
           id : id
       }
   })
-  .then(customer => {
-    if(customer){
-      customer.destroy({ where : { id:id } })
-        .then(customer => {
+  .then(product => {
+    if(product){
+      product.destroy({ where : { id:id } })
+        .then(product => {
           res.send({
             message : 'data sudah dihapus',
           });
@@ -97,7 +97,7 @@ exports.delete = (req,res) =>{
     }
     else{
       res.send({
-        message : 'data customer tidak ada'
+        message : 'data product tidak ada'
       });
     };
   })
